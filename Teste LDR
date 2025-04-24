@@ -1,0 +1,29 @@
+const int ldrPin = 34;       
+const int ledVerde = 25;      
+const int ledVermelho = 26;   /
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ledVerde, OUTPUT);
+  pinMode(ledVermelho, OUTPUT);
+}
+
+void loop() {
+  int ldrValue = analogRead(ldrPin); 
+  Serial.println(ldrValue);          
+
+  if (ldrValue < 1000) { // Pouca luz 
+    digitalWrite(ledVermelho, HIGH);
+    digitalWrite(ledVerde, LOW);
+  } 
+  else if (ldrValue > 3000) { // Muita luz
+    digitalWrite(ledVermelho, LOW);
+    digitalWrite(ledVerde, HIGH);
+  } 
+  else { 
+    digitalWrite(ledVermelho, HIGH);
+    digitalWrite(ledVerde, HIGH);
+  }
+
+  delay(500); /
+}
