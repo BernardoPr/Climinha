@@ -1,0 +1,35 @@
+const int sensorNTCPin = 32;
+const int LED_VERDE = 25;
+const int LED_VERMELHO = 26;
+
+const float BETA = 3950;
+const float R_FIXO = 10000; 
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(LED_VERMELHO, OUTPUT);
+}
+
+void loop() {
+  int leitura = analogRead(sensorNTCPin);
+  float tensao = leitura * 3.3 / 4095.0;
+  float resistenciaNTC = (3.3 - tensao) * R_FIXO / tensao;
+
+  float temperatura = 1.0 / (log(resistenciaNTC / 10000.0) / BETA + 1.0 / 298.15) - 273.15;
+
+  Serial.print("Temperatura: ");
+  Serial.print(temperatura);
+  Serial.println(" °C");
+
+  if (temperatura >= 22 && temperatura <= 23) {
+    digitalWrite(LED_VERDE, HIGH);
+    digitalWrite(LED_VERMELHO, LOW);
+  } else {
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(LED_VERMELHO, HIGH);
+  }
+
+  delay(1000);
+}
+
